@@ -29,7 +29,6 @@ class AbstractClassifier(ABC):
         self.train()
         self.eval()
 
-    @abstractmethod    
     def model_check(self):
         if self.model is None:
             print("No model compiled!")
@@ -46,5 +45,7 @@ class AbstractClassifier(ABC):
     @abstractmethod
     def summarize(self):
         self.model.summary()
+
+
 
 

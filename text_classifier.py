@@ -38,6 +38,7 @@ class TextClassifier(AbstractClassifier):
                                                        maxlen=256)
 
     def train(self, train_set_prop=0.8, rand_seed=42, n_epochs=40, batch_size=512, verbose=1):
+        super().model_check()
         np.random.seed(rand_seed)
         train_data, dev_data = np.split(np.random.permutation(self.train_data), [int(train_set_prop * len(self.train_data))])
         train_labels, dev_labels = np.split(np.random.permutation(self.train_labels), [int(train_set_prop * len(self.train_labels))])
@@ -50,6 +51,7 @@ class TextClassifier(AbstractClassifier):
         
 
     def eval(self):
+        super().model_check()
         results = self.model.evaluate(self.test_data, self.test_labels)
         print(results)
 
@@ -75,9 +77,6 @@ class TextClassifier(AbstractClassifier):
     
     def plot_predictions(self):
         pass
-
-    def model_check(self):
-        super().model_check()
 
     def preview(self):
         pass
