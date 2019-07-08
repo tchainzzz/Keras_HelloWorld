@@ -39,6 +39,10 @@ class AbstractClassifier(ABC):
         self.raise_override_error()
 
     @abstractmethod
+    def plot_history(self, **wkargs):
+        self.raise_override_error()
+
+    @abstractmethod
     def preview(self):
         self.raise_override_error()
 

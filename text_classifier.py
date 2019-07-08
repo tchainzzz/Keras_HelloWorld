@@ -78,6 +78,9 @@ class TextClassifier(AbstractClassifier):
     def plot_predictions(self):
         pass
 
+    def plot_history(self):
+        pass
+
     def preview(self):
         pass
 

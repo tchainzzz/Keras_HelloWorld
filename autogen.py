@@ -3,6 +3,7 @@ import inspect
 import argparse
 import contextlib
 import sys
+import subprocess
 
 """
     METHODS FOR INTROSPECTIVELY QUERYING DATA FROM MODULE
@@ -25,10 +26,10 @@ def get_abstract_methods():
 GENERIC_SIGNATURE = "self"
 
 def append_not_implemented_stub(f):
-    f.write("\t\tsuper().raise_override_error()\n\n")
+    f.write("        super().raise_override_error()\n\n")
 
 def write_method(f, name):
-    f.write("\tdef {}({}):\n".format(name, GENERIC_SIGNATURE))
+    f.write("    def {}({}):\n".format(name, GENERIC_SIGNATURE))
     append_not_implemented_stub(f)
 
 """
@@ -42,12 +43,16 @@ def write_imports(f, classname):
 
 def write_class_header(f, classname, superclassname):
     f.write("class {}({}):\n".format(classname, superclassname))
-    f.write("\tdef __init__({}):\n".format(GENERIC_SIGNATURE))
+    f.write("    def __init__({}):\n".format(GENERIC_SIGNATURE))
     append_not_implemented_stub(f)
 
 def write_class_methods(f, methods):
     for method in methods:
         write_method(f, method)
+
+def write_main_stub(f, classname):
+    f.write("if __name__ == '__main__':\n")
+    f.write("    model = {}()".format(classname))
 
 """
     UTILITY
@@ -82,7 +87,9 @@ if __name__ == '__main__':
         write_imports(f, main_class_name())
         write_class_header(f, args.name, main_class_name())
         write_class_methods(f, get_abstract_methods())
+        write_main_stub(f, args.name)
         funcs = inspect.getmembers(TFInterface.AbstractClassifier, predicate=inspect.isfunction)
         abs_funcs = [func[1] for func in funcs if hasattr(func[1], '__isabstractmethod__')]
+    subprocess.run(["autopep8", "-i", filename])
     
     
